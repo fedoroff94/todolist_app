@@ -1,20 +1,20 @@
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './tasks-reducer';
-import {TasksStateType} from '../App';
-import { AddTodolistAC, RemoveTodolistAC } from "./todolist-reducer";
+import { TasksStateType } from '../App';
+import { AddTodolistAC, RemoveTodolistAC, SetTodolistsAC } from "./todolist-reducer";
 
 let startState: TasksStateType = {};
 
 beforeEach(() => {
     startState = {
         "todolistId1": [
-            { id: "1", title: "CSS", isDone: false },
-            { id: "2", title: "JS", isDone: true },
-            { id: "3", title: "React", isDone: false }
+            {id: "1", title: "CSS", isDone: false},
+            {id: "2", title: "JS", isDone: true},
+            {id: "3", title: "React", isDone: false}
         ],
         "todolistId2": [
-            { id: "1", title: "bread", isDone: false },
-            { id: "2", title: "milk", isDone: true },
-            { id: "3", title: "tea", isDone: false }
+            {id: "1", title: "bread", isDone: false},
+            {id: "2", title: "milk", isDone: true},
+            {id: "3", title: "tea", isDone: false}
         ]
     };
 });
@@ -29,7 +29,6 @@ test('correct task should be deleted from correct array', () => {
     expect(endState["todolistId2"].length).toBe(2);
     expect(endState["todolistId2"].every(t => t.id != "2")).toBeTruthy();
 });
-
 
 
 test('correct task should be added to correct array', () => {
@@ -94,6 +93,19 @@ test('property with todolistId should be deleted', () => {
 
     expect(keys.length).toBe(1);
     expect(endState["todolistId2"]).toBeUndefined();
+});
+
+test('empty arrays should be added when we set todolists', () => {
+    const action = SetTodolistsAC([
+        {id: '1', title: "What to learn", filter: "all"},
+        {id: '2', title: "What to buy", filter: "all"}
+    ]);
+
+    const endState = tasksReducer({}, action);
+    const keys = Object.keys(endState);
+    expect(keys.length).toBe(2);
+    expect(endState['1']).toStrictEqual([]);
+    expect(endState['2']).toStrictEqual([]);
 });
 
 

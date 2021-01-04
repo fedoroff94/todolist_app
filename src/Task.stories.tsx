@@ -1,6 +1,7 @@
 import React from 'react';
 import { Task } from "./Task";
 import { action } from "@storybook/addon-actions";
+import { TaskPriorities, TaskStatuses } from "./api/task-api";
 
 export default {
     title: 'AddItemForm component',
@@ -18,14 +19,30 @@ export const TaskBaseExample = (props: any) => {
             removeTask={TaskRemoveCallback}
             changeTaskStatus={StatusChangedCallback}
             changeTaskTitle={TitleChangedCallback}
-            task={{id: '1', isDone: true, title: 'CSS'}}
+            task={{
+                id: '1', status: TaskStatuses.Completed, title: 'CSS', description: "",
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                todoListId: '',
+                order: 1,
+                addedDate: ''
+            }}
             todolistId={'todolistId1'}
-         />
+        />
         <Task
             removeTask={TaskRemoveCallback}
             changeTaskStatus={StatusChangedCallback}
             changeTaskTitle={TitleChangedCallback}
-            task={{id: '2', isDone: false, title: 'JS'}}
+            task={{
+                id: '2', status: TaskStatuses.New, title: 'JS', description: "",
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                todoListId: '',
+                order: 1,
+                addedDate: ''
+            }}
             todolistId={'todolistId2'}
         />
     </>

@@ -9,7 +9,7 @@ import {AppRootStateType} from '../src/state/store'
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer
-})
+});
 
 const initialGlobalState = {
     todolists: [
