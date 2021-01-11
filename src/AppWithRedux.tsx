@@ -8,8 +8,8 @@ import { Menu } from '@material-ui/icons';
 import {
     AddTodolistAC,
     ChangeTodolistFilterAC,
-    ChangeTodolistTitleAC, FilterValuesType,
-    RemoveTodolistAC, SetTodolistsAC, TodolistDomainType
+    ChangeTodolistTitleAC, fetchTodolistsThunkTC, FilterValuesType,
+    RemoveTodolistAC, TodolistDomainType
 } from "./state/todolist-reducer";
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from "./state/tasks-reducer";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,11 +29,7 @@ function AppWithRedux() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        todolistAPI.getTodolists()
-            .then(res => {
-                let action = SetTodolistsAC(res.data);
-                dispatch(action);
-            })
+        dispatch(fetchTodolistsThunkTC());
     }, []);
 
     const removeTask = useCallback((id: string, todolistId: string) => {

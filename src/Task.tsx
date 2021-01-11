@@ -13,17 +13,20 @@ export type TaskPropsType = {
 }
 
 export const Task = React.memo((props: TaskPropsType) => {
+
     const onClickHandler = () => props.removeTask(props.task.id, props.todolistId);
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        let newIsDoneValue = e.currentTarget.checked;
-        props.changeTaskStatus(props.task.id, props.todolistId, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New);
-    };
 
     const onTitleChangeHandler = useCallback((newValue: string) => {
         props.changeTaskTitle(newValue, props.task.id, props.todolistId);
     }, [props.changeTaskTitle, props.task.id, props.todolistId]);
 
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        let newIsDoneValue = e.currentTarget.checked;
+        props.changeTaskStatus(props.task.id, props.todolistId, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New);
+    };
+
     return <div key={props.task.id} className={props.task.status === TaskStatuses.Completed ? "is-done" : ""}>
+
         <Checkbox
             checked={props.task.status === TaskStatuses.Completed}
             color="primary"
@@ -31,6 +34,7 @@ export const Task = React.memo((props: TaskPropsType) => {
         />
 
         <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
+
         <IconButton onClick={onClickHandler}>
             <Delete/>
         </IconButton>
