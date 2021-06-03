@@ -1,11 +1,12 @@
 import {
     AddTodolistAC,
-    ChangeTodolistFilterAC,
+    ChangeTodolistFilterAC, ChangeTodolistStatusAC,
     ChangeTodolistTitleAC, FilterValuesType,
     RemoveTodolistAC, SetTodolistsAC, TodolistDomainType,
     todolistsReducer
 } from './todolist-reducer';
 import { v1 } from 'uuid';
+import { appReducer, InitialStateType, RequestStatusType, setAppStatusAC } from "../../app/app-reducer";
 
 let todolistId1: string;
 let todolistId2: string;
@@ -15,8 +16,8 @@ beforeEach(() => {
     todolistId1 = v1();
     todolistId2 = v1();
     startState = [
-        {id: todolistId1, title: "What to learn", filter: "all", addedDate: '', order: 1},
-        {id: todolistId2, title: "What to buy", filter: "all", addedDate: '', order: 2}
+        {id: todolistId1, title: "What to learn", entityStatus: 'idle', filter: "all", addedDate: '', order: 1},
+        {id: todolistId2, title: "What to buy", entityStatus: 'idle', filter: "all", addedDate: '', order: 2}
     ];
 });
 
@@ -29,12 +30,19 @@ test('correct todolist should be removed', () => {
 });
 
 test('correct todolist should be added', () => {
-    let newTodolistTitle = "New Todolist";
 
-    const endState = todolistsReducer(startState, AddTodolistAC(todolistId2, newTodolistTitle, 'all', '', 0));
+    const todolist: TodolistDomainType = {
+        title: '',
+        filter: "all",
+        order: 1,
+        addedDate: '',
+        id: '',
+        entityStatus: 'idle'
+    };
+    const endState = todolistsReducer(startState, AddTodolistAC(todolist));
 
     expect(endState.length).toBe(3);
-    expect(endState[0].title).toBe(newTodolistTitle);
+    expect(endState[0].title).toBe(todolist.title);
 });
 
 test('correct todolist should change its name', () => {
@@ -75,7 +83,13 @@ test('Todolists should be set to the state', () => {
     expect(endState.length).toBe(2);
 });
 
-
+test('correct status of todolist should be changed', () => {
+    let newStatus:RequestStatusType  = "loading";
+    const action = ChangeTodolistStatusAC(todolistId2, newStatus);
+    const endState = todolistsReducer(startState, action);
+    expect(endState[0].entityStatus).toBe("idle");
+    expect(endState[1].entityStatus).toBe("loading");
+});
 
 
 

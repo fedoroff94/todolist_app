@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FilterValuesType } from "../state/todolist-reducer";
+import { FilterValuesType, TodolistDomainType } from "../features/todolistsList/todolist-reducer";
 
 type ResponseType<D> = {
     resultCode: number
@@ -23,6 +23,34 @@ const instance = axios.create({
     }
 });
 
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
+}
+
+export type AuthMeParamsType = {
+    id: number,
+    email: string,
+    login: string
+}
+
+export const authAPI = {
+    login(data: LoginParamsType){
+        const promise = instance.post<ResponseType<{userId?: number}>>('auth/login', data);
+        return promise;
+    },
+    logout(){
+        const promise = instance.delete<ResponseType<{userId?: number}>>('auth/login');
+        return promise;
+    },
+    authMe(){
+        const promise = instance.get<ResponseType<{id: number, email: string, login: string}>>('auth/me');
+        return promise;
+    }
+};
+
 export const todolistAPI = {
 
     getTodolists(){
@@ -30,7 +58,7 @@ export const todolistAPI = {
     },
 
     postTodolist(title: string){
-       return instance.post<ResponseType<{item: TodolistType}>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/`,
+       return instance.post<ResponseType<{item: TodolistDomainType}>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/`,
            {title: title});
     },
 

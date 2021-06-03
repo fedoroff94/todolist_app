@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import './App.css';
-import { Todolist } from './Todolist';
+import '../app/App.css';
+import { Todolist } from '../features/todolistsList/todolist/Todolist';
 import { v1 } from 'uuid';
-import { AddItemForm } from './AddItemForm';
+import { AddItemForm } from '../components/AddItemForm/AddItemForm';
 import { AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
-import { TaskPriorities, TaskStatuses, TaskType } from "./api/task-api";
-import { FilterValuesType, TodolistDomainType } from "./state/todolist-reducer";
+import { TaskPriorities, TaskStatuses, TaskType } from "../api/task-api";
+import { FilterValuesType, TodolistDomainType } from "../features/todolistsList/todolist-reducer";
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -17,8 +17,8 @@ function App() {
     let todolistId2 = v1();
 
     let [todolists, setTodolists] = useState<Array<TodolistDomainType>>([
-        {id: todolistId1, title: "What to learn", filter: "all", addedDate: '', order: 0},
-        {id: todolistId2, title: "What to buy", filter: "all", addedDate: '', order: 0}
+        {id: todolistId1, title: "What to learn", entityStatus: 'idle', filter: "all", addedDate: '', order: 0},
+        {id: todolistId2, title: "What to buy", entityStatus: 'idle', filter: "all", addedDate: '', order: 0}
     ]);
 
     let [tasks, setTasks] = useState<TasksStateType>({
@@ -111,7 +111,7 @@ function App() {
 
     function addTodolist(title: string) {
         let newTodolistId = v1();
-        let newTodolist: TodolistDomainType = {id: newTodolistId, title: title, filter: 'all', addedDate: '',
+        let newTodolist: TodolistDomainType = {id: newTodolistId, title: title, filter: 'all', entityStatus: 'idle', addedDate: '',
             order: 0};
         setTodolists([newTodolist, ...todolists]);
         setTasks({
@@ -153,15 +153,12 @@ function App() {
                             return <Grid item>
                                 <Paper style={{padding: "10px"}}>
                                     <Todolist
-                                        key={tl.id}
-                                        id={tl.id}
-                                        title={tl.title}
+                                        todolist={tl}
                                         tasks={tasksForTodolist}
                                         removeTask={removeTask}
                                         changeFilter={changeFilter}
                                         addTask={addTask}
                                         changeTaskStatus={changeStatus}
-                                        filter={tl.filter}
                                         removeTodolist={removeTodolist}
                                         changeTaskTitle={changeTaskTitle}
                                         changeTodolistTitle={changeTodolistTitle}

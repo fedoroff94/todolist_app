@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { taskAPI } from "../api/task-api";
 
 export default {
@@ -99,7 +99,6 @@ export const UpdateTask = () => {
             deadline: deadline
         })
             .then((res) => {
-                debugger
                 setState(res.data)
             })
     };
